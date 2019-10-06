@@ -1,15 +1,13 @@
 import React, { useState, useRef } from "react";
 import get from "lodash/get";
+import { fileValidator, preventBrowserDefaults } from "../utils/drag-drop";
 
 const DragAndDrop = ({ processDrop, children, config }) => {
   let [dragOverlay, setDragOverlay] = useState(false);
   const [data, setData] = useState(false);
   const [error, setError] = useState(false);
   let dragCounter = useRef(0);
-  const preventBrowserDefaults = e => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
+
   const handleDrag = e => {
     preventBrowserDefaults(e);
   };
@@ -27,33 +25,6 @@ const DragAndDrop = ({ processDrop, children, config }) => {
       setDragOverlay(false);
     }
   };
-  const fileValidator = files => {
-    const { allowedFileFormats, fileSizeLimit, filesLimit } = config;
-    const { length } = files;
-    if (length === 0) {
-      return false;
-    }
-    if (length > filesLimit) {
-      const err =
-        filesLimit > 1
-          ? `Only ${filesLimit} files are allowed to upload`
-          : `Only one file is allowed to upload`;
-      setError(err);
-      return false;
-    }
-    const { size, type } = files[0];
-    setData(false);
-    if (!allowedFileFormats.includes(type)) {
-      setError("File format must be either png or jpg");
-      return false;
-    }
-    if (size / 1024 / 1024 > fileSizeLimit) {
-      setError(`File size exceeded the limit of ${fileSizeLimit}MB`);
-      return false;
-    }
-    setError(false);
-    return true;
-  };
   const fileReader = files => {
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
@@ -65,7 +36,12 @@ const DragAndDrop = ({ processDrop, children, config }) => {
     const files = get(e, "dataTransfer.files");
     preventBrowserDefaults(e);
     setDragOverlay(false);
-    if (!fileValidator(files)) {
+    setError(false);
+    const { isValidFile, errVal } = fileValidator(files, config);
+    if (!isValidFile) {
+      if (errVal) {
+        setError(errVal);
+      }
       return false;
     }
     fileReader(files);

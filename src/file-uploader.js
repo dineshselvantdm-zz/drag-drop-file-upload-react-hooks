@@ -11,6 +11,7 @@ const FileUploader = () => {
   const processDrop = files => {};
   return (
     <DragAndDrop processDrop={processDrop} config={config}>
+      <div>Drag and drop files here</div>
       <div>State machine based on file upload</div>
     </DragAndDrop>
   );
