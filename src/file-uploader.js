@@ -39,6 +39,11 @@ const FileUploader = () => {
       {loaderState === FILE_UPLOADER_STATE.SUCCESS && (
         <div className="drag-container">File Upload done!</div>
       )}
+      {loaderState === FILE_UPLOADER_STATE.FAILURE && (
+        <div className="drag-container">
+          File Upload failed. Please try again!
+        </div>
+      )}
     </>
   );
 };
