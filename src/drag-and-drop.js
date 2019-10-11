@@ -25,18 +25,12 @@ const DragAndDrop = ({ processDrop, children, config }) => {
       setDragOverlay(false);
     }
   };
-  const fileReader = files => {
-    const reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-    reader.onload = loadEvt => {
-      setData(loadEvt.target.result);
-    };
-  };
   const handleDrop = e => {
     const files = get(e, "dataTransfer.files");
     preventBrowserDefaults(e);
     setDragOverlay(false);
     setError(false);
+    dragCounter.current = 0;
     const { isValidFile, errVal } = fileValidator(files, config);
     if (!isValidFile) {
       if (errVal) {
@@ -48,6 +42,15 @@ const DragAndDrop = ({ processDrop, children, config }) => {
     processDrop(files);
     dragCounter.current = 0;
   };
+
+  const fileReader = files => {
+    const reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = loadEvt => {
+      setData(loadEvt.target.result);
+    };
+  };
+
   const dragOverlayClass = dragOverlay ? "overlay" : "";
   return (
     <div>
