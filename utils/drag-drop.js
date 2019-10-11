@@ -1,5 +1,5 @@
 export const fileValidator = (files, config) => {
-  const { allowedFileFormats, fileSizeLimit, filesLimit } = config;
+  const { allowedFileFormats, fileSizeMBLimit, filesLimit } = config;
   const { length } = files;
   const { size, type } = files[0];
   let err = false;
@@ -16,8 +16,8 @@ export const fileValidator = (files, config) => {
         : `Only one file is allowed to upload`;
   } else if (!allowedFileFormats.includes(type)) {
     err = "File format must be either png or jpg";
-  } else if (size / 1024 / 1024 > fileSizeLimit) {
-    err = `File size exceeded the limit of ${fileSizeLimit}MB`;
+  } else if (size / 1024 / 1024 > fileSizeMBLimit) {
+    err = `File size exceeded the limit of ${fileSizeMBLimit}MB`;
   } else {
     result.isValidFile = true;
   }

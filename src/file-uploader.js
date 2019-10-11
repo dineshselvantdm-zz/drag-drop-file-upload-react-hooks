@@ -3,7 +3,7 @@ import DragAndDrop from "./drag-and-drop";
 
 const config = {
   allowedFileFormats: ["image/jpeg", "image/jpg", "image/png"],
-  fileSizeLimit: 20,
+  fileSizeMBLimit: 20,
   filesLimit: 1
 };
 
