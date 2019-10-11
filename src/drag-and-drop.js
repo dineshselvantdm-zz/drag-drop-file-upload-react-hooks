@@ -40,7 +40,6 @@ const DragAndDrop = ({ processDrop, children, config }) => {
     }
     fileReader(files);
     processDrop(files);
-    dragCounter.current = 0;
   };
 
   const fileReader = files => {
